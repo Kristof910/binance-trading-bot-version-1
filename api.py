@@ -1,52 +1,43 @@
 from binance.spot import Spot
 from binance.client import Client
 import setup
+import time
 
-#import logging
-#from binance.lib.utils import config_logging
 
-spot = Spot(key=setup.api_key, secret=setup.api_secret)
-client = Client(setup.api_key, setup.api_secret)
+if setup.test_server: # test server
+    spot = Spot(key=setup.testnet_api_key, secret=setup.testnet_api_secret, base_url="https://testnet.binance.vision")
+    client = Client(setup.testnet_api_key, setup.testnet_api_secret)
+else: # binance server
+    spot = Spot(key=setup.binance_api_key, secret=setup.binance_api_secret)
+    client = Client(setup.binance_api_key, setup.binance_api_secret)
 
-def api_check():
-    pass
 
 def get_balance():
     data = spot.account()
-    return data["balances"][0]["free"]
+    return data["balances"][0]["free"] # 0 is BTC balance and can't be referred as setup.symbol
 
 def get_current_price():
-    #data = client.get_symbol_info('BTCUSDT')
-    #data2 = client.get_exchange_info()
-    #logging.info(spot.avg_price("BTCUSDT"))
-    data = spot.avg_price("BTCUSDT")
+    data = spot.avg_price(setup.symbol)
+    time.sleep(1)
     return data["price"]
 
-def trade(param1, param2, param3):
-    pass
+def open_trade(side, type, quantity, price, stop_win, stop_loss):
+    params = {
+    "symbol": "BTCUSDT",
+    "side": "BUY",
+    "type": "MARKET",
+    #"timeInForce": "GTC",
+    "quantity": 0.002,
+    #"price": 9500,
+}
+    
+    trade_setup = spot.new_margin_order(**params)
+    print(trade_setup)
+
+def get_open_orders():
+    return spot.get_open_orders(setup.symbol)
 
 
 
-def test():
-
-    client = Spot()
-    print(client.time())
-
-    client = Spot(key=api_key, secret=api_secret)
-
-    # Get account information
-    print(client.account())
-
-    # Post a new order
-    '''params = {
-        'symbol': 'BTCUSDT',
-        'side': 'SELL',
-        'type': 'LIMIT',
-        'timeInForce': 'GTC',
-        'quantity': 0.002,
-        'price': 9500
-    }
-
-    response = client.new_order(**params)
-    print(response)'''
-
+#data = client.get_symbol_info('BTCUSDT')
+#data2 = client.get_exchange_info()

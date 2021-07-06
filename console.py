@@ -1,22 +1,36 @@
+import setup
 
 clearConsole = lambda: print('\n' * 150)
 
-def start(current_price, balance):
+def start(current_price, balance, open_trades):
 
-    selected_market = "BTC-USDT"
-    #clearConsole()
-    print("\nTrading Bot v1.0\n")
+    info(current_price, balance, open_trades)
 
-    print("Selected market: ", selected_market)
+    confirmation = input("\nType 'confirm' to start: ")
+    return confirmation
+
+def status(current_price, balance, open_trades, phase_number):
+
+    info(current_price, balance, open_trades)
+    print("Phase number: ", phase_number)
+
+
+def info(current_price, balance, open_trades):
+
+    clearConsole()
+    print("\nTrading Bot v1.0", "\n")
+
+    print("Test server: ", setup.test_server)
+    print("Selected market: ", setup.symbol)
     print("Current price: ", current_price)
-    print("BTC Balance: ", balance, "\n")
+    print("Balance: ", balance)
+    print("Open trades: ", len(open_trades), "\n")
 
+    print("Upper TP: ", setup.upper_tp, "%")
+    print("Lower TP: ", setup.lower_tp, "%")
+    print("First short: ", setup.first_short, "%")
+    print("First amount: ", setup.first_amount, "$\n")
 
-    param1 = input("Enter buy-in or type 'market': ")
-    param2 = input("Enter stop-win rate in %: ")
-    param3 = input("Enter stop-loss rate in %: ")
-
-    print("\n")
-
-    return param1, param2, param3
-
+    print("Price increaser list: \n")
+    for i in range(len(setup.price_increaser_list)):
+        print(i+1, "value: ", setup.price_increaser_list[i], "x")  
