@@ -6,13 +6,14 @@ def start(current_price, balance, open_trades):
 
     info(current_price, balance, open_trades)
 
-    confirmation = input("\nType 'confirm' to start: ")
+    confirmation = input("\nType 'c' to confirm or anything else to quit: ")
     return confirmation
 
-def status(current_price, balance, open_trades, phase_number):
+def status(current_price, balance, open_trades, phase_number, phase_rounds):
 
     info(current_price, balance, open_trades)
-    print("Phase number: ", phase_number)
+    print("\nCurrent phase number: ", phase_number)
+    print("Successful phase rounds: ", phase_rounds)
 
 
 def info(current_price, balance, open_trades):
@@ -20,10 +21,9 @@ def info(current_price, balance, open_trades):
     clearConsole()
     print("\nTrading Bot v1.0", "\n")
 
-    print("Test server: ", setup.test_server)
     print("Selected market: ", setup.symbol)
-    print("Current price: ", current_price)
-    print("Balance: ", balance)
+    print("Current coin price: ", current_price)
+    print("Selected account balance: ", balance)
     print("Open trades: ", len(open_trades), "\n")
 
     print("Upper TP: ", setup.upper_tp, "%")

@@ -1,11 +1,5 @@
-binance_api_key = "Hrg3sXQSGGDbcLHcPsuApzRFjFhtEBwUmxFuDXKCHSAzyMNnoG2IgyNpiqKwOgIT"
-binance_api_secret = "MxymcStO0yVSRukTMl9NinNSGAQNyAznv1L0SY6ZjuiEQTIxw0yzF5ULXJK0QNzo"
-
-testnet_api_key = "rHSD7OZThnGgjHGLdBYW7eUgmvLe7bHyLCEeTKllh7q1LY61VRQUThbCbZwtp9DR"
-testnet_api_secret = "irkZ99kwIL6jWC2A5aqUzYeQAMwOFNiP9LdEnbkRtK5ZGHfO06xBTlm8XJMSpkVG"
-
-# True = testnet, False = binance
-test_server = True
+binance_api_key = "dqkPlC1GjfkqGaNkmv4cYnPUcICc8lYXkYATjDdULhRgcmpDEm9KXeqXuemfSLRJ" # berci
+binance_api_secret = "eNwzbu98Ni2vbR8X7hhA03GkmTrUSJbXBKUbv16zKS1PkzZSmibuZrmMdf8opeWw" # berci
 
 symbol = "BTCUSDT"
 

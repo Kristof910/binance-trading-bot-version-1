@@ -1,43 +1,47 @@
-from binance.spot import Spot
 from binance.client import Client
 import setup
-import time
 
 
-if setup.test_server: # test server
-    spot = Spot(key=setup.testnet_api_key, secret=setup.testnet_api_secret, base_url="https://testnet.binance.vision")
-    client = Client(setup.testnet_api_key, setup.testnet_api_secret)
-else: # binance server
-    spot = Spot(key=setup.binance_api_key, secret=setup.binance_api_secret)
-    client = Client(setup.binance_api_key, setup.binance_api_secret)
+binance_client = Client(setup.binance_api_key, setup.binance_api_secret)
 
 
 def get_balance():
-    data = spot.account()
-    return data["balances"][0]["free"] # 0 is BTC balance and can't be referred as setup.symbol
+    balance = binance_client.futures_account_balance()
+    return balance[1]['balance']
 
 def get_current_price():
-    data = spot.avg_price(setup.symbol)
-    time.sleep(1)
-    return data["price"]
+    result = binance_client.futures_symbol_ticker(symbol=setup.symbol)
+    return result["price"]
 
-def open_trade(side, type, quantity, price, stop_win, stop_loss):
-    params = {
-    "symbol": "BTCUSDT",
-    "side": "BUY",
-    "type": "MARKET",
-    #"timeInForce": "GTC",
-    "quantity": 0.002,
-    #"price": 9500,
-}
-    
-    trade_setup = spot.new_margin_order(**params)
-    print(trade_setup)
+def change_leverage(leverage):
+    leverage_change = binance_client.futures_change_leverage(symbol=setup.symbol, leverage=leverage)
+
+def open_trade(quantity, side):
+
+    positionSide = ""
+    if side == "BUY":
+        positionSide = "LONG"
+    elif side == "SELL":
+        positionSide = "SHORT"    
+
+    #test_hedge_mode = binance_client.futures_get_position_mode()
+    #print("TEST HERE 1: ", test_hedge_mode)
+
+    #test_hedge_mode_2 = binance_client.futures_coin_change_position_mode(dualSidePosition = "true")
+    #print("TEST HERE 2:", test_hedge_mode_2)
+
+    binance_client.futures_create_order(
+        symbol=setup.symbol,
+        type='LIMIT', # for testing, otherwise "MARKET"
+        timeInForce='GTC',  
+        price=65000,  # for testing, otherwise clear this line
+        positionSide=positionSide,  
+        side=side,
+        quantity=quantity  
+    )
+
 
 def get_open_orders():
-    return spot.get_open_orders(setup.symbol)
+    result = binance_client.futures_get_open_orders(symbol=setup.symbol)
+    return result
 
-
-
-#data = client.get_symbol_info('BTCUSDT')
-#data2 = client.get_exchange_info()
